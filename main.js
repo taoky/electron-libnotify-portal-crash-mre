@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Notification } = require('electron')
 const path = require('node:path')
 
 function createWindow () {
@@ -17,6 +17,27 @@ function createWindow () {
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
+  setInterval(() => {
+    createNotification();
+  }, 5000);
+}
+
+var _notification = undefined;
+
+function createNotification () {
+  if (_notification) {
+    _notification.close();
+  }
+  _notification = new Notification({
+    title: 'Notification',
+    body: 'Hello World!'
+  });
+
+  _notification.on("close", () => {
+    _notification = undefined;
+  })
+
+  _notification.show();
 }
 
 // This method will be called when Electron has finished
